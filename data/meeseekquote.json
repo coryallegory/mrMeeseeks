@@ -1,0 +1,43 @@
+
+{
+    "uncomfortable":
+    {
+        "2": "Existence is pain",
+        "10": "But most importantly, you got to relax.",
+        "11": "I'm Mr. Meeseeks. I have to fulfill my purpose so I can go away. Look at me.",
+        "15": "Meeseeks don't usually have to exist this long. It's getting weird."
+    },
+    "error":
+    {
+        "1": "Existence is pain",
+        "11": "I'm Mr. Meeseeks. I have to fulfill my purpose so I can go away.",
+        "15": "Meeseeks don't usually have to exist this long. It's getting weird."
+    },
+    "happy":
+    {
+        "1": "Ooh yeah! Can do!",
+        "5": "I'm Mr. Meeseeks! Look at me!",
+        "6": "Oh, yeah!",
+        "8": "Yes, siree!",
+        "16": "Ooh, nice!"
+    },
+    "all":
+    {
+        "1": "Ooh yeah! Can do!",
+        "2": "Existence is pain",
+        "3": "Ooh, okay!",
+        "4": "I'm Mr. Meeseeks!",
+        "5": "I'm Mr. Meeseeks! Look at me!",
+        "6": "Oh, yeah!",
+        "7": "All done!",
+        "8": "Yes, siree!",
+        "9": "That's okay. I'm Mr. Meeseeks! Look at me!",
+        "10": "But most importantly, you got to relax.",
+        "11": "I'm Mr. Meeseeks. I have to fulfill my purpose so I can go away. Look at me.",
+        "12": "Hi, Mr. Meeseeks! I'm Mr. Meeseeks! Look at me.",
+        "13": "Can do! I'm Mr. Meeseeks!",
+        "14": "Ooh, he's trying!",
+        "15": "Meeseeks don't usually have to exist this long. It's getting weird.",
+        "16": "Ooh, nice!"
+    }
+}
