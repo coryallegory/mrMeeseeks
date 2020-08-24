@@ -91,11 +91,6 @@ function sendMessage(message, embedMessage)
 
 function runSimulation(message, embedMessage, multiplier, attackName)
 {
-    // const keysAttack = Object.keys(attack.attack)
-    // const randIndexAttack = Math.floor(Math.random() * keysAttack.length)
-    // const randKeyAttack = keysAttack[randIndexAttack]
-    // const attackQuote = attack.attack[randKeyAttack]
-
     var attackDMG = Math.floor(Math.random() * multiplier);
     var defenceDMG = Math.floor(Math.random() * 15);
 
@@ -104,11 +99,6 @@ function runSimulation(message, embedMessage, multiplier, attackName)
 
     if (enemyHP <= 0) { enemyFaint(message, yourHP, attackName, attackDMG, defenceDMG); return; }
     if (yourHP <= 0) { playerFaint(message, enemyHP, attackName, attackDMG, defenceDMG); return; }
-
-    // const keysHit = Object.keys(attack.takeHit)
-    // const randIndexHit = Math.floor(Math.random() * keysHit.length)
-    // const randKeyHit = keysHit[randIndexHit]
-    // const hitQuote = attack.takeHit[randKeyHit]
 
     const embed = new Discord.RichEmbed() //create a new embed message and put data in it
         .setColor(colors.orange)

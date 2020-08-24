@@ -128,7 +128,6 @@ module.exports.run = async (bot, message, args) =>
         }
 
     }
-    //channel.overwritePermissions(channel.guild.defaultRole, { VIEW_CHANNEL: false });
 
 }
 
