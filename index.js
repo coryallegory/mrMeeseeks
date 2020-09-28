@@ -68,18 +68,6 @@ bot.on("message", async message => //if the bot sees a message (this can be in a
     let cmd = messageArray[0]; //get the first part and name it "cmd"
     let args = messageArray.slice(1); //get the message array minus the first index to remove the command from it
 
-    if(message.isMemberMentioned(bot.user))
-    {
-        const keys = Object.keys(meeseek.uncomfortable)
-
-        const randIndex = Math.floor(Math.random() * keys.length)
-
-        const randKey = keys[randIndex]
-
-        const meeseekQuote = meeseek.uncomfortable[randKey]
-        message.channel.send(`> ${meeseekQuote}`);
-    }
-
     if(!message.content.startsWith(prefix))
     {
         automod.automod(bot, message.author, message);
