@@ -16,11 +16,11 @@ module.exports.run = async (bot, message, args) =>
 
     let guild = message.channel.guild;
 
-    let userCount = countUsers(guild);
-    let botCount = countBots(guild);
     let name = guild.name;
     let owner = guild.owner;
-    let roles = countNonEveryoneRoles(guild);
+    let userCount = countUsers(guild);
+    let botCount = countBots(guild);
+    let roleCount = countNonEveryoneRoles(guild);
 
     const embed = new Discord.RichEmbed()
     .setTitle(`Server information`)
@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) =>
     .addField(`Botcount:`, `The botcount is: ${botCount}`)
     .addField(`Guild name:`, `The guild name is: ${name}`)
     .addField(`Guild owner`, `The guild owner is: ${owner}`)
-    .addField(`Roles`, `There are ${roles} roles in this server`);
+    .addField(`Roles`, `There are ${roleCount} roles in this server`);
 
     message.channel.send(embed);
 
