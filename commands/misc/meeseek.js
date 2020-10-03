@@ -9,22 +9,18 @@ const meeseek = require("../../data/meeseekquote.json");
 
 module.exports.run = async (bot, message, args) => 
 {
+    // If no argument is given it will print out a predefined quote
     if(!args[0])
     {
         message.channel.send("I'm Mr. Meeseeks! Look at me!");
     }
 
+    // Get a random quote from the all quoted list
     if(args[0] === "quote" || args[0] === "q")
     {
         const keys = Object.keys(meeseek.all)
-
-        // Generate random index based on number of keys
         const randIndex = Math.floor(Math.random() * keys.length)
-
-        // Select a key from the array of keys using the random index
         const randKey = keys[randIndex]
-
-        // Use the key to get the corresponding name from the "reddit" object
         const meeseekQuote = meeseek.all[randKey]
         message.channel.send(`> ${meeseekQuote}`);
     }

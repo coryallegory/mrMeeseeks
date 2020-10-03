@@ -11,11 +11,13 @@ const roles = require("../../data/roles.json");
 module.exports.run = async (bot, message, args) => 
 {
 
+    // If the member who ran the command is not a moderator the code gets canceled
     if(!message.member.roles.find(r => r.id === roles.moderator))
 	{ 
 		return;
     }
 
+    // If no user is given information will be given about the user who ran the command
     if (!args[0])
     {
         var user = bot.users.get(message.member.id);
@@ -33,6 +35,8 @@ module.exports.run = async (bot, message, args) =>
             .setFooter(`Mr. Meeseeks will now stop existing... **POOF**`);
         message.channel.send(embed);
     }
+
+    // If a user is given it will use that
     if (args[0])
     {
         var user = bot.users.get(args[0]);
@@ -64,6 +68,6 @@ module.exports.config =
     name: "userinfo",
     aliases: [],
     usage: "-usage",
-    description: "Play a game of Ping Pong with the bot",
+    description: "Get information about a specific user",
     accessableby: "Members"
 }

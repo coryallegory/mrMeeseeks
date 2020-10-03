@@ -6,28 +6,21 @@ const reddit = require("../../data/reddit.json");
 const colors = require("../../data/colors.json");
 const meeseek = require("../../data/meeseekquote.json");
 
-module.exports.run = async (bot, message, args) => //if the command "meme" has been typed run the code below:
+module.exports.run = async (bot, message, args) =>
 {
 
-    const keys = Object.keys(meeseek.happy) //get all the data from the meeseek json file
+    // Get a random Mr. Meeseeks quote from the happy quotes list
+    const keys = Object.keys(meeseek.happy)
+    const randIndex = Math.floor(Math.random() * keys.length)
+    const randKey = keys[randIndex]
+    const meeseekQuote = meeseek.happy[randKey]
 
-        const randIndex = Math.floor(Math.random() * keys.length) //generate a random number with a max size that is equal to the number of keys in the meeseek file
-
-        const randKey = keys[randIndex] //Get a key with that random
-
-        const meeseekQuote = meeseek.happy[randKey] //get the content that corresponds to the key we obatined above
-
-    if(!args[0] || args[0] == "random" || args[0] == "r") //if there are no arguments given do...
-    {
+    // If no argument is given, print out a post from a random subreddit
+    if(!args[0] || args[0] == "random" || args[0] == "r") {
+        // Get a random subreddit
         const keys = Object.keys(reddit)
-
-        // Generate random index based on number of keys
         const randIndex = Math.floor(Math.random() * keys.length)
-
-        // Select a key from the array of keys using the random index
         const randKey = keys[randIndex]
-
-        // Use the key to get the corresponding name from the "reddit" object
         const subReddit = reddit[randKey]
 
         try { //try to get a random post from the randomly chosen subreddit, put it in a embed and send it
@@ -47,9 +40,8 @@ module.exports.run = async (bot, message, args) => //if the command "meme" has b
         } catch (err) { //if the above code did not work, log the error in the console
             return console.log(err);
         }
-    }
-    else
-    {
+    } else {
+        // A argument was given, it will print out a post from the specified subreddit
         try {
             const { body } = await snekfetch
                 .get(`https://www.reddit.com/r/${args[0]}.json?sort=top&t=week`)
