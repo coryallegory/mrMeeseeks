@@ -6,17 +6,21 @@ const botconfig = require("../../botconfig.json");
 /*Data files*/
 const colors = require("../../data/colors.json");
 
+const countUsers = (guild) => guild.members.filter((user) => !user.user.bot).size
+const countBots = (guild) => guild.members.filter((user) => user.user.bot).size
+const countNonEveryoneRoles = (guild) => guild.roles.filter((role) => role.name !== '@everyone').size;
+
 module.exports.run = async (bot, message, args) => 
 {
     let now = new Date()
 
     let guild = message.channel.guild;
 
-    let userCount = guild.members.filter((user) => !user.user.bot).size;
-    let botCount = guild.members.filter((user) => user.user.bot).size;
+    let userCount = countUsers(guild);
+    let botCount = countBots(guild);
     let name = guild.name;
     let owner = guild.owner;
-    let roles = guild.roles.filter((role) => role.name !== '@everyone').size;
+    let roles = countNonEveryoneRoles(guild);
 
     const embed = new Discord.RichEmbed()
     .setTitle(`Server information`)
