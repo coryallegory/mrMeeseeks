@@ -15,34 +15,25 @@ var error;
 
 module.exports.run = async (bot, message, args) => 
 {
-    //Get the data needed to run the below code
+    // Get the logging channel
     serverLogs = bot.channels.get(config.serverLogs);
 
-    if(!message.member.roles.find(r => r.id === roles.moderator))
-    {
-        return;
-    }
+    // If the member who used the command does not have the moderator role the code will not be ran
+    if(!message.member.roles.find(r => r.id === roles.moderator)) return;
 
-    if(!args[0])
-    {
-        message.channel.send("Please provide a input.");
-        return;
-    }
+
+
+    if(!args[0]) return message.channel.send("Please provide a input.");
 
     var purgeAmount = parseInt(args[0]);
-    if (purgeAmount === null || purgeAmount <= 0 || purgeAmount >= 100)
-    {
-        message.channel.send("Please provide a valid input that is higher than 0 but lower than 100.");
-        return;
-    }
+    if (purgeAmount === null || purgeAmount <= 0 || purgeAmount >= 100) return message.channel.send("Please provide a valid input that is higher than 0 but lower than 100.");
 
     message.delete();
 
     var fetched = await message.channel.fetchMessages({limit: purgeAmount});
     message.channel.bulkDelete(fetched)
     .catch(APIerror => error = APIerror)
-    if (error)
-    {
+    if (error) {
         console.log(error);
 
         const embed = new Discord.RichEmbed() //create a new embed builder
@@ -53,9 +44,7 @@ module.exports.run = async (bot, message, args) =>
             .addField("Purge requested by", `${message.member} | ${message.member.id}`)
             .setFooter(`Mr. Meeseeks did not know how to deal with the error...`);
         serverLogs.send(embed);
-    }
-    else if (!error)
-    {
+    } else {
         const embed = new Discord.RichEmbed() //create a new embed builder
             .setColor(colors.green)
             .setTimestamp(message.createdAt)

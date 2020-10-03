@@ -35,6 +35,6 @@ module.exports.config =
     name: "serverinfo",
     aliases: ["servinfo", "servinf", "serverinf", "srvinf", "si"],
     usage: "-usage",
-    description: "Play a game of Ping Pong with the bot",
+    description: "Get general information about the server",
     accessableby: "Members"
 }

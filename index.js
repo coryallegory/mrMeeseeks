@@ -12,13 +12,12 @@ const meeseek = require("./data/meeseekquote.json");
 //Event files
 const memberLeave = require("./events/memberLeave.js");
 const memberJoin = require("./events/memberJoin.js");
-const emojiAdd = require("./events/emojiAdd.js");
 const automod = require("./events/automod.js");
 
 
 const bot = new Discord.Client({disableEveryone: true}); //create a new client that is the bot
 
-/* Log that the bot is online and set it's status */
+// Once the bot is online, log it and set its activity
 bot.on("ready", async () => {
     let now = date.format(new Date(), 'YYYY/MM/DD HH:mm:ss');
     console.log(`[${now}] ${bot.user.username} is online`)
@@ -29,21 +28,21 @@ bot.commands = new Discord.Collection(); // Collection for all commands
 bot.aliases = new Discord.Collection(); // Collection for all aliases of every command
 
 
-/* Create a list of all the subfolders that our commands will be in*/
-const modules = ['misc', 'moderation', `setup`, `music`];
+// These are all the folders in the 'commands' folder, these folders are the ones containing all the actual commands
+const modules = ['misc', 'moderation'];
 
-/* Command getter */
+// This piece loops through every folder containing commands and loads registers them so that they will work when the command is used
 modules.forEach(c => {
-    fs.readdir(`./commands/${c}`, (err, files) => { //get all files in the "commands" folder
+    fs.readdir(`./commands/${c}`, (err, files) => {
 
-        if (err) console.log(err) //if there is an error, log it in the console
+        if (err) console.log(err)
 
-        let jsfile = files.filter(f => f.split(".").pop() === "js") //filer all the files to only get the javascript files
-        if(jsfile.length <= 0){ //if there are no files found log in the console that no files (containing commands) have been found
+        let jsfile = files.filter(f => f.split(".").pop() === "js")
+        if(jsfile.length <= 0){
             return console.log("[LOG] Couldn't find commands!");
         }
 
-        jsfile.forEach((f, i) => { //Get all the javascript files and load them in so that their commands can be used
+        jsfile.forEach((f, i) => {
             let pull = require(`./commands/${c}/${f}`);
             bot.commands.set(pull.config.name, pull);
             pull.config.aliases.forEach(alias => {
@@ -56,75 +55,36 @@ modules.forEach(c => {
 
 });
 
-/* CommandFile excecutor */
-bot.on("message", async message => //if the bot sees a message (this can be in any text channel the bot has access to) do...
-{
+// If a message is being send check if it was a command and if so run that command. Other things like a automod are also placed in here
+bot.on("message", async message => {
     
-    if(message.author.bot || message.channel.type === "dm") return; //if the message was send in a direct / private message or if the message was send by the bot, return.
+    if(message.author.bot || message.channel.type === "dm") return;
 
-    let prefix = botconfig.prefix; //create a variable called prefix and assign the bots prefix to it
+    let prefix = botconfig.prefix;
 
-    let messageArray = message.content.split(" ") //split the message that has been send into parts
-    let cmd = messageArray[0]; //get the first part and name it "cmd"
-    let args = messageArray.slice(1); //get the message array minus the first index to remove the command from it
+    let messageArray = message.content.split(" ")
+    let cmd = messageArray[0];
+    let args = messageArray.slice(1);
 
-    if(!message.content.startsWith(prefix))
-    {
+    if(!message.content.startsWith(prefix)) {
         automod.automod(bot, message.author, message);
-        return; //if the message does not start with the predefined prefix, stop the code
+        return;
     }
-    let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length))) //check if there is a command with the name that comes after the prefix, if so the code below will run the code in the file that corresponds to that command
+    let commandfile = bot.commands.get(cmd.slice(prefix.length)) || bot.commands.get(bot.aliases.get(cmd.slice(prefix.length)))
     if (commandfile) commandfile.run(bot, message, args)
     else if (!commandfile) message.channel.send(`I am not able to find that command. Use "${prefix}help" to get a list of all commands.`)
 
 });
 
-bot.on("guildMemberRemove", function(member) /* A member has been kicked or left the Discord server */
-{
+// Runs if a member gets kicked or left the server
+bot.on("guildMemberRemove", function(member) {
     memberLeave.logLeave(bot, member)
 });
 
-bot.on("guildMemberAdd", function(member) /* A member has joined the Discord server */
-{ 
+// Runs if a member joins the server
+bot.on("guildMemberAdd", function(member) {
     memberJoin.logJoin(bot, member); 
 });
 
-bot.on('messageReactionAdd', (reaction, user) => {
-    emojiAdd.autoEmojiRoles(bot, reaction, user);
-});
- 
-// bot.on('messageReactionRemove', (reaction, user) => {
-//     console.log('a reaction has been removed');
-// });
-
-bot.on('raw', packet => {
-    // We don't want this to run on unrelated packets
-    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
-    // Grab the channel to check the message from
-    const channel = bot.channels.get(packet.d.channel_id);
-    // There's no need to emit if the message is cached, because the event will fire anyway for that
-    if (channel.messages.has(packet.d.message_id)) return;
-    // Since we have confirmed the message is not cached, let's fetch it
-    channel.fetchMessage(packet.d.message_id).then(message => {
-        // Emojis can have identifiers of name:id format, so we have to account for that case as well
-        const emoji = packet.d.emoji.id ? `${packet.d.emoji.name}:${packet.d.emoji.id}` : packet.d.emoji.name;
-        // This gives us the reaction we need to emit the event properly, in top of the message object
-        const reaction = message.reactions.get(emoji);
-        // Adds the currently reacting user to the reaction's users collection.
-        if (reaction) reaction.users.set(packet.d.user_id, bot.users.get(packet.d.user_id));
-        // Check which type of event it is before emitting
-        if (packet.t === 'MESSAGE_REACTION_ADD') {
-            bot.emit('messageReactionAdd', reaction, bot.users.get(packet.d.user_id));
-        }
-        if (packet.t === 'MESSAGE_REACTION_REMOVE') {
-            bot.emit('messageReactionRemove', reaction, bot.users.get(packet.d.user_id));
-        }
-
-    });
-
-});
-
-
-
-/* Log the bot in by using its token */
+// Use the auth code to login the bot
 bot.login(botconfig.token);
