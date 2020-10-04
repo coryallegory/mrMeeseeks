@@ -6,9 +6,23 @@ const botconfig = require("../../botconfig.json");
 /*Data files*/
 const colors = require("../../data/colors.json");
 
+const hasRoles = (roles) => roles.length;
+const singleRole = roles => roles.length === 1;
+
 const countUsers = (guild) => guild.members.filter((user) => !user.user.bot).size
 const countBots = (guild) => guild.members.filter((user) => user.user.bot).size
-const countNonEveryoneRoles = (guild) => guild.roles.filter((role) => role.name !== '@everyone').size;
+const getRolesMessage = (guild) => {
+    const rolesList = guild.roles
+        .filter((role) => role.name !== '@everyone')
+        .map(role => role.name);
+        
+    if(!hasRoles(rolesList)) return `This server don\`t have roles`;
+    if(singleRole(rolesList)) return `The only one role is ${rolesList[0]}`;
+
+    const lastRole = rolesList.pop();
+    const rolesText = `${rolesList.join(", ")} and ${lastRole}`;
+    return `There are ${rolesText} roles in this server`;
+}
 
 module.exports.run = async (bot, message, args) => 
 {
@@ -20,7 +34,7 @@ module.exports.run = async (bot, message, args) =>
     let owner = guild.owner;
     let userCount = countUsers(guild);
     let botCount = countBots(guild);
-    let roleCount = countNonEveryoneRoles(guild);
+    let rolesMessage = getRolesMessage(guild);
 
     const embed = new Discord.RichEmbed()
     .setTitle(`Server information`)
@@ -30,7 +44,7 @@ module.exports.run = async (bot, message, args) =>
     .addField(`Botcount:`, `The botcount is: ${botCount}`)
     .addField(`Guild name:`, `The guild name is: ${name}`)
     .addField(`Guild owner`, `The guild owner is: ${owner}`)
-    .addField(`Roles`, `There are ${roleCount} roles in this server`);
+    .addField(`Roles`, rolesMessage);
 
     message.channel.send(embed);
 
