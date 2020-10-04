@@ -14,7 +14,8 @@ const countBots = (guild) => guild.members.filter((user) => user.user.bot).size
 const getRolesMessage = (guild) => {
     const rolesList = guild.roles
         .filter((role) => role.name !== '@everyone')
-        .map(role => role.name);
+        .sort((firstRole, secondRole) => secondRole.position - firstRole.position)
+        .map(role => `@${role.name}`);
         
     if(!hasRoles(rolesList)) return `This server don\`t have roles`;
     if(singleRole(rolesList)) return `The only one role is ${rolesList[0]}`;
