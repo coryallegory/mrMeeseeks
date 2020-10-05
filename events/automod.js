@@ -10,10 +10,10 @@ module.exports = {
     automod: (bot, member, message) => {
 
         // This list should be filled with bad words that a automod should pick up and 
-        const forbidenWords = [''];
+        const forbiddenWords = require("../data/forbiddenwords").default
 
         // If the message contains a forbiden word this code gets triggered
-        if (forbidenWords.indexOf(message.content) != -1){
+        if (forbiddenWords.indexOf(message.content) != -1){
             message.delete();
 
             const embed = new Discord.RichEmbed()
