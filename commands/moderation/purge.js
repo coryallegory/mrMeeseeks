@@ -7,7 +7,6 @@ const botconfig = require("../../botconfig.json");
 const config = require("../../data/config.json");
 
 /*Data files*/
-const rolesconfig = require("../../data/roles.json");
 const colors = require("../../data/colors.json");
 const roles = require("../../data/roles.json");
 
@@ -68,5 +67,5 @@ module.exports.config =
     aliases: [],
     usage: "-usage",
     description: "Purge a x amount of messages in a chat",
-    accessableby: `${rolesconfig.mod}`
+    accessableby: `${roles.mod}`
 }
