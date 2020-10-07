@@ -7,10 +7,9 @@ const botconfig = require('../../botconfig.json');
 const colors = require('../../data/colors.json');
 
 module.exports.run = async (bot, message, args) => {
-  message.channel.send('Pinging...').then((m) => {
-    var ping = m.createdTimestamp - message.createdTimestamp;
-    m.edit(`**:ping_pong: Pong! Your Ping Is:** ${ping}ms`);
-  });
+  message.channel.send(
+    `**:ping_pong: Pong! Your Ping Is:** ${Math.round(bot.ping)}ms`
+  );
 };
 
 module.exports.config = {
