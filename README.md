@@ -14,9 +14,9 @@ Instructions on how to get started working on this project can be found below.
 - Make sure you have NodeJS installed
   1. You can check if you have NodeJS installed by running 'npm version' in a powershell window
 - Update the botconfig
-  1. Go to the discord developer portal and click 'New Application'
-  2. From there click on the 'bot' tab and select 'create new bot user'
-  3. Copy the token and paste it in the botconfig.json
+  1. Go to the [discord developer portal](https://discord.com/developers/applications) and create a test application by clicking 'New Application'
+  2. From there click on the 'Bot' tab and select 'Add Bot'
+  3. 'Click to Reveal Token', then use it as the token value in botconfig.json
 - Create a new Discord server and invite the bot
   1. You can invite the bot by [using this link](https://discordapi.com/permissions.html) and filling in the data
 - Update the files in the folder named 'data'
